@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Servitor AI 🪷 - About</title>
+    <link rel="icon" type="image/x-icon" href="icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      window.SUPABASE_URL = "https://ntudfaoldmamdkoexcak.supabase.co";
+      window.SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA";
+    </script>
+    <style>
+      main {
+        width: 50%;
+      }
+      p {
+        font-size: 0.9rem;
+        color: black;
+      }
+
+      h2 {
+        border-bottom: 1px dashed gray;
+      }
+      h3 {
+        margin-top: 1rem;
+        border-bottom: 1px dotted gray;
+      }
+      .prompt {
+        border: 1px solid black;
+        padding: 4px;
+        border-radius: 2px;
+        background-color: #fff3cd;
+        line-height: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">
+        <img
+          src="./images/logo5.png"
+          alt="Servitor AI Logo"
+          class="logo"
+          height="80"
+        />
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Manifest!</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <!-- <a href="contact.html">Contact</a> -->
+        <div class="divider"></div>
+        <a href="auth.html" class="auth-link">Login/Register</a>
+        <a href="intentions.html" class="intentions-link hidden"
+          >My Intentions</a
+        >
+        <a href="#" class="logout-link hidden">Logout</a>
+      </div>
+    </nav>
+    <main>
+      <section>
+        <h2>How it <em>really</em> works</h2>
+        <h3>Electronick Servitors</h3>
+        <p>
+          Traditionally a servitor is a spirit that is conjured by a human
+          wizard/witch in order to do their bidding. What we present here is an
+          experiment in chaos magic. We use the <i>hot new technology</i> of
+          <a href="https://en.wikipedia.org/wiki/Large_language_model"
+            >LARGE LANGUAGE MODELS</a
+          >
+          to create a literal digital servitor that will process your words of
+          intention.
+        </p>
+        <p>
+          That's all it does. Just as you might meditate on your desired reality
+          in order to manifest it, so too will this servitor take your words and
+          "meditate" on them. Your words are repetitively given to it as a
+          prompt (with some additional instructions) to expand on. In this way
+          we utilize the immense processing power available to us in this modern
+          age, for magick.
+        </p>
+        <h3>Example</h3>
+        <p>Say your intention is</p>
+        <p class="prompt">
+          "John Doe is charismatic".
+        </p>
+        <p>
+          ServitorAI will take this and expand on it for a few thousand words.
+          producing for example:
+        </p>
+        <p class="prompt">
+          ... John Doe is charismatic. He exudes confidence, and this confidence
+          is infectious, making those around him feel more at ease and inspired
+          to be their best selves. He is not arrogant or entitled, but rather he
+          is unapologetically himself, and this authenticity is deeply
+          attractive. John Doe is charismatic. He is a natural people person,
+          and he thrives in environments where he can interact with others,
+          listening actively and responding thoughtfully. He is an excellent
+          communicator, able to convey his ideas and thoughts in a clear and
+          concise manner, making him an effective leader and collaborator. ...
+        </p>
+        <p>It will then do this for <b>tens of thousands of words</b> a day, depending on your setting, effectively writing a few books in the process.</p>
+        <h3>Philosophy</h3>
+        <p>
+          Is the AI sentient? Does it matter? Or does it matter more to your own
+          subconscious to know that your words are being processed somewhere by
+          some other entity? As with any magick, who knows? It seems to be just
+          another edition of the classic "assuming the world is out there"
+          blind. Based on various magical, mystical and tantric traditions, the
+          underlying fabric of spirit is a subtle energy field. Often described
+          as literal electricity / magnetism. And so, we allow you to extend
+          your subconsciousness with this electronic servant.
+        </p>
+        <!-- <p>
+          Do you think god created us, in his image to do his bidding too...? :)
+        </p> -->
+        <h3>Visual representation of what happens on our "cloud servers"</h3>
+        <p>blue balls = your dreams and desires</p>
+        <img src="./images/goldberg.gif" alt="Goldberg Machine" width="500px" />
+
+        <h3>Contact</h3>
+        <p>
+          If you have any questions, please contact us at <a href="mailto:servitorai@gmail.com">servitorai@gmail.com</a>
+        </p>
+        <p>
+          We're also on <a href="https://x.com//ServitorA83074">Twitter</a> (forthcomingly known as "X")
+        </p>
+      </section>
+    </main>
+    <footer>
+      <a href="https://neocities.org" id="neocities-link"
+        >built on neocities.org</a
+      >
+      <span>Servitor AI 2025</span>
+      <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const supabase = window.supabase.createClient(
+          window.SUPABASE_URL,
+          window.SUPABASE_ANON_KEY
+        );
+
+        // Check authentication status
+        const updateAuthUI = async () => {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+          const authLink = document.querySelector(".auth-link");
+          const intentionsLink = document.querySelector(".intentions-link");
+          const logoutLink = document.querySelector(".logout-link");
+
+          if (session) {
+            authLink.classList.add("hidden");
+            intentionsLink.classList.remove("hidden");
+            logoutLink.classList.remove("hidden");
+          } else {
+            authLink.classList.remove("hidden");
+            intentionsLink.classList.add("hidden");
+            logoutLink.classList.add("hidden");
+          }
+        };
+
+        // Initial check
+        updateAuthUI();
+
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+          updateAuthUI();
+        });
+
+        // Logout functionality
+        document
+          .querySelector(".logout-link")
+          .addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+              const { error } = await supabase.auth.signOut();
+              if (error) throw error;
+              window.location.href = "index.html";
+            } catch (error) {
+              alert(error.message);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

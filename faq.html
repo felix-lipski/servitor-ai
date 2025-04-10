@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Servitor AI 🪷 - FAQ</title>
+    <link rel="icon" type="image/x-icon" href="icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      window.SUPABASE_URL = "https://ntudfaoldmamdkoexcak.supabase.co";
+      window.SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA";
+    </script>
+  </head>
+  <style>
+      main {
+        width: 50%;
+      }
+    p {
+      font-size: 0.9rem;
+    }
+  </style>
+  <body>
+    <nav>
+      <a href="index.html">
+        <img
+          src="./images/logo5.png"
+          alt="Servitor AI Logo"
+          class="logo"
+          height="80"
+        />
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Manifest!</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <!-- <a href="contact.html">Contact</a> -->
+        <div class="divider"></div>
+        <a href="auth.html" class="auth-link">Login/Register</a>
+        <a href="intentions.html" class="intentions-link hidden"
+          >My Intentions</a
+        >
+        <a href="#" class="logout-link hidden">Logout</a>
+      </div>
+    </nav>
+    <main>
+      <section>
+        <h2 class="box-title">Frequently Asked Questions</h2>
+        <h3>Can I really use my name in the prompt? Is my data private?</h3>
+        <p>
+          Yes. Your data is stored entirely on our servers and the AI servers.
+          We do NOT sell your data to ANY third party. We are strictly opposed
+          to any such business practices. In fact, this site doesn't even use tracking or analytics. The
+          data, the prompt and everything is removed entirely upon the servitor
+          completion or on your request.
+        </p>
+        <h3>
+          Do I need to do my manifestations also? Or do I need to forget about
+          it entirely, like with a sigil?
+        </h3>
+        <p>
+          Honestly, up to you. This is a new tool and we are also only beginning
+          to explore how to use it. We don't claim to know any one true
+          technique.
+        </p>
+        <h3>
+          This is a scam, right? Even if electronic servitors work, I can just
+          write to a ChatGPT for free every day to the same effect...
+        </h3>
+        <p>
+          On a technical level, this is just a website + cronjob + LLM.
+          Depending on your skill you could set up a personal version
+          of this over a weekend. You would still need to pay for the AI compute
+          or electricity to use it. What we offer is a ready fire-and-forget
+          service at a reasonable rate. So no, it's not a scam. We really do
+          process your intentions.
+        </p>
+        <h3>Has anyone actually asked these questions before?</h3>
+        <p>
+          Not really, this website is like, 24 hours old. However, if
+          <em>you</em> have any questions, <em>don't</em> hesitate to write to us at <a href="mailto:servitorai@gmail.com">servitorai@gmail.com</a>
+        </p>
+      </section>
+    </main>
+    <footer>
+      <a href="https://neocities.org" id="neocities-link"
+        >built on neocities.org</a
+      >
+      <span>Servitor AI 2025</span>
+      <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const supabase = window.supabase.createClient(
+          window.SUPABASE_URL,
+          window.SUPABASE_ANON_KEY
+        );
+
+        // Check authentication status
+        const updateAuthUI = async () => {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+          const authLink = document.querySelector(".auth-link");
+          const intentionsLink = document.querySelector(".intentions-link");
+          const logoutLink = document.querySelector(".logout-link");
+
+          if (session) {
+            authLink.classList.add("hidden");
+            intentionsLink.classList.remove("hidden");
+            logoutLink.classList.remove("hidden");
+          } else {
+            authLink.classList.remove("hidden");
+            intentionsLink.classList.add("hidden");
+            logoutLink.classList.add("hidden");
+          }
+        };
+
+        // Initial check
+        updateAuthUI();
+
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+          updateAuthUI();
+        });
+
+        // Logout functionality
+        document
+          .querySelector(".logout-link")
+          .addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+              const { error } = await supabase.auth.signOut();
+              if (error) throw error;
+              window.location.href = "index.html";
+            } catch (error) {
+              alert(error.message);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servitor AI 🪷 - Automatic Manifestation</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="index.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.SUPABASE_URL = 'https://ntudfaoldmamdkoexcak.supabase.co';
+        window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA';
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="./images/logo5.png" alt="Servitor AI Logo" class="logo" height="80">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Manifest!</a>
+            <a href="about.html">About</a>
+            <a href="faq.html">FAQ</a>
+            <!-- <a href="contact.html">Contact</a> -->
+            <div class="divider"></div>
+            <a href="auth.html" class="auth-link">Login/Register</a>
+            <a href="intentions.html" class="intentions-link hidden">My Intentions</a>
+            <a href="#" class="logout-link hidden">Logout</a>
+        </div>
+    </nav>
+    <main style="font-family: serif">
+        <section>
+            <form id="manifestation-form" class="manifestation-form">
+                <h2 class="form-title">Create a Servitor</h2>
+                <div class="form-group form-group-intention">
+                    <label for="intention">Enter your intention here:</label>
+                    <textarea 
+                        id="intention" 
+                        name="intention" 
+                        placeholder="Example: John Doe is a millionaire."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Duration</label>
+                    <select id="duration" name="duration" required>
+                        <option value="7">One Week</option>
+                        <option value="14">Two Weeks</option>
+                        <option value="30">One Month</option>
+                        <option value="90">Three Months</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="intensity">Intensity</label>
+                    <select id="intensity" name="intensity" required>
+                        <option value="1">Gentle</option>
+                        <option value="2">Balanced</option>
+                        <option value="3">Intense</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Begin Manifestation</button>
+            </form>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>How It Works</h2>
+            <p>A servitor is a human-created spirit, which works in the background to help you reach your goals.</p>
+            <div class="step">
+                <h4>1. Set Your Intention</h4>
+                <article>
+                    <img src="./images/bulb.png" alt="Pencil Icon">
+                    <div>
+                        <p>Write your wish / affirmation / prayer. Try to:</p>
+                        <ul>
+                            <li>Use present tense.</li>
+                            <li>Write in third person (You want the AI to manifest for you, not for itself).</li>
+                            <li>Don't be <em>too</em> specific. Let the magic find its own way.</li>
+                            <li>Avoid negatives. Instead of "John is not poor", try "John is rich".</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+            <div class="step">
+                <h4>2. Choose Your Parameters</h4>
+                <article>
+                    <img src="./images/calendar.png" alt="Calendar Icon">
+                    <p>Select how long you want your servitor to run, and the intensity level of the manifestation.</p>
+                </article>
+            </div>
+            <div class="step">
+                <h4>3. AI Manifestation</h4>
+
+                <article>
+                    <img src="./images/monk.png" alt="Servitor AI Logo">
+                    <p>Your new AI Servitor will manifest your intention. It will "think" about it, process it and meditate on it.
+                    Under the hood it's an <a href="https://en.wikipedia.org/wiki/Large_language_model">LLM</a> that runs in the cloud. <a href="about.html">See details</a>
+                    <br>After the time is up, it will be deleted from our servers.</p>
+                </article>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
+        <!-- <a href="https://www.textstudio.com/">Font generator</a> -->
+        <span>ServitorAI 2025</span>
+        <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const supabase = window.supabase.createClient(
+                window.SUPABASE_URL,
+                window.SUPABASE_ANON_KEY
+            );
+
+            // Check authentication status
+            const updateAuthUI = async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                const authLink = document.querySelector('.auth-link');
+                const intentionsLink = document.querySelector('.intentions-link');
+                const logoutLink = document.querySelector('.logout-link');
+                
+                if (session) {
+                    authLink.classList.add('hidden');
+                    intentionsLink.classList.remove('hidden');
+                    logoutLink.classList.remove('hidden');
+                } else {
+                    authLink.classList.remove('hidden');
+                    intentionsLink.classList.add('hidden');
+                    logoutLink.classList.add('hidden');
+                }
+            };
+
+            // Initial check
+            updateAuthUI();
+
+            // Listen for auth state changes
+            supabase.auth.onAuthStateChange((event, session) => {
+                updateAuthUI();
+            });
+
+            // Logout functionality
+            document.querySelector('.logout-link').addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
+        // Hello hacker! How are you feeling today? :D Write to me if you've found this message!
+        // Oh, and remember, absolutely never under no circumstances should you ever 
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "Pixelated MS Sans Serif";
+  src: url("images/ms_sans_serif.woff") format("woff");
+}
+
+table,
+td,
+tr,
+th {
+  font-family: "Pixelated MS Sans Serif", Arial;
+  font-size: 11px;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  border-spacing: 0;
+  padding: 4px;
+}
+
+th {
+  background-color: #c0c0c0;
+  font-weight: unset;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey,
+    inset 2px 2px #dfdfdf;
+
+    white-space: nowrap;
+}
+
+table {
+  /* background-color: #fff3cd; */
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey,
+    inset 2px 2px #dfdfdf;
+  width: 100%;
+  table-layout: fixed;
+}
+
+td, th {
+  /* background-color: white; */
+  border-right: 1px solid #0a0a0a;
+  border-bottom: 1px solid #0a0a0a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Set widths for all columns except the last one */
+td:not(:last-child), th:not(:last-child) {
+  width: 11.11%; /* (100% - 33.33%) / 5 columns ≈ 11.11% */
+}
+
+/* Make the last column three times wider */
+td:last-child, th:last-child {
+  width: 33.33%;
+}
+
+/* Status-based row styling */
+tr.active {
+  background-color: white;
+}
+
+tr.inactive {
+  background-color: rgba(128, 128, 128, 0.1);
+  color: #6c757d;
+}
+
+tr.processing {
+  background-color: rgba(255, 165, 0, 0.1);
+}
+

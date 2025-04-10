@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servitor AI 🪷 - My Intentions</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="intentions.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- <link
+      rel="stylesheet"
+      href="https://unpkg.com/98.css"
+    > -->
+    <script>
+        window.SUPABASE_URL = 'https://ntudfaoldmamdkoexcak.supabase.co';
+        window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA';
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="./images/logo4.png" alt="Servitor AI Logo" class="logo" height="80">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Manifest!</a>
+            <a href="about.html">About</a>
+            <a href="faq.html">FAQ</a>
+            <!-- <a href="contact.html">Contact</a> -->
+            <a href="auth.html" class="auth-link">Login/Register</a>
+            <a href="intentions.html" class="intentions-link hidden">My Intentions</a>
+            <a href="#" class="logout-link hidden">Logout</a>
+        </div>
+    </nav>
+    <main>
+        <section>
+            <h2>My Intentions</h2>
+            <div id="intentions-container">
+                <p>Loading your intentions...</p>
+            </div>
+            <p>
+                <a href="index.html">+ Create a new intention</a>
+            </p>
+        </section>
+    </main>
+    <footer>
+        <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
+        <span>Servitor AI 2025</span>
+        <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const supabase = window.supabase.createClient(
+                window.SUPABASE_URL,
+                window.SUPABASE_ANON_KEY
+            );
+
+            // Check authentication status
+            const updateAuthUI = async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                const authLink = document.querySelector('.auth-link');
+                const intentionsLink = document.querySelector('.intentions-link');
+                const logoutLink = document.querySelector('.logout-link');
+                
+                if (session) {
+                    authLink.classList.add('hidden');
+                    intentionsLink.classList.remove('hidden');
+                    logoutLink.classList.remove('hidden');
+                } else {
+                    authLink.classList.remove('hidden');
+                    intentionsLink.classList.add('hidden');
+                    logoutLink.classList.add('hidden');
+                }
+            };
+
+            // Initial check
+            updateAuthUI();
+
+            // Listen for auth state changes
+            supabase.auth.onAuthStateChange((event, session) => {
+                updateAuthUI();
+            });
+
+            // Logout functionality
+            document.querySelector('.logout-link').addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+
+            // Fetch and display intentions
+            const fetchIntentions = async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    document.getElementById('intentions-container').innerHTML = 
+                        '<p>Please <a href="auth.html">log in</a> to view your intentions.</p>';
+                    return;
+                }
+
+                const userId = session.user.id;
+                
+                try {
+                    const { data, error } = await supabase
+                        .from('intentions')
+                        .select('*')
+                        .eq('user_id', userId)
+                        .order('created_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    
+                    if (data.length === 0) {
+                        document.getElementById('intentions-container').innerHTML = 
+                            '<p>You have no intentions yet. <a href="index.html">Create one</a> to get started!</p>';
+                        return;
+                    }
+                    
+                    // Create table
+                    const table = document.createElement('table');
+                    table.classList.add('interactive');
+                    
+                    // Create table header
+                    const thead = document.createElement('thead');
+                    const headerRow = document.createElement('tr');
+                    
+                    const headers = [
+                        'Statement', 
+                        'Intensity', 
+                        'Remaining days', 
+                        'Status', 
+                        'Created', 
+                        'Daily Words Processed',
+                        'Total Words Processed',
+                        'Log Excerpt (last session)'
+                    ];
+                    
+                    headers.forEach(headerText => {
+                        const th = document.createElement('th');
+                        th.textContent = headerText;
+                        headerRow.appendChild(th);
+                    });
+                    
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+                    
+                    // Create table body
+                    const tbody = document.createElement('tbody');
+                    
+                    data.forEach(intention => {
+                        const row = document.createElement('tr');
+                        
+                        // Add status-based class to row
+                        if (intention.status === 'active') {
+                            row.classList.add('active');
+                        } else if (intention.status === 'inactive') {
+                            row.classList.add('inactive');
+                        } else if (intention.status === 'processing') {
+                            row.classList.add('processing');
+                        }
+
+                        console.log(intention);
+                        
+                        // Statement
+                        const statementCell = document.createElement('td');
+                        statementCell.textContent = intention.statement;
+                        row.appendChild(statementCell);
+                        
+                        // Intensity
+                        const intensityCell = document.createElement('td');
+                        // intensityCell.textContent = intention.intensity === 0 ? "gentle" : intention.intensity === 1 ? "balanced" : "intense";
+                        // intensityCell.style.fontWeight = "bold";
+                        // intensityCell.textContent = intensityCell.textContent.toUpperCase();
+                        if (intention.intensity === 0) {
+                            intensityCell.textContent = "GENTLE";
+                            intensityCell.style.color = "#00c42a";
+                        } else if (intention.intensity === 1) {
+                            intensityCell.textContent = "BALANCED";
+                            intensityCell.style.color = "#0056b3";
+                        } else {
+                            intensityCell.textContent = "INTENSE";
+                            intensityCell.style.color = "#ff8800";
+                        }
+                        row.appendChild(intensityCell);
+                        
+                        // Duration
+                        const durationCell = document.createElement('td');
+                        durationCell.textContent = intention.remaining_days;
+                        row.appendChild(durationCell);
+                        
+                        // Status
+                        const statusCell = document.createElement('td');
+                        statusCell.textContent = intention.status.toUpperCase();
+                        row.appendChild(statusCell);
+                        
+                        // Created at
+                        const createdAtCell = document.createElement('td');
+                        const createdAtDate = new Date(intention.created_at);
+                        createdAtCell.textContent = createdAtDate.toLocaleDateString();
+                        row.appendChild(createdAtCell);
+                        
+                        // Daily Words Processed
+                        const dailyQuota = 25000*Math.pow(2, intention.intensity);
+                        const dailyWordsCell = document.createElement('td');
+                        dailyWordsCell.textContent = `${ dailyQuota - intention.remaining_daily_quota || 0}/${dailyQuota || 0}`;
+                        row.appendChild(dailyWordsCell);
+                        
+                        // Total Words Processed
+                        const totalWordsCell = document.createElement('td');
+                        totalWordsCell.textContent = `${intention.total_words_processed || 0}/${intention.total_quota || 0}`;
+                        row.appendChild(totalWordsCell);
+                        
+                        // Log Excerpt
+                        const logExcerptCell = document.createElement('td');
+                        if (intention.log) {
+                            logExcerptCell.textContent = "..." + intention.log + "...";
+                            logExcerptCell.classList.add('log-excerpt');
+                        } else {
+                            logExcerptCell.textContent = 'No log excerpt available';
+                        }
+                        row.appendChild(logExcerptCell);
+                        
+                        tbody.appendChild(row);
+                    });
+                    
+                    table.appendChild(tbody);
+                    
+                    // Create sunken panel and add table
+                    const sunkenPanel = document.createElement('div');
+                    sunkenPanel.classList.add('sunken-panel');
+                    sunkenPanel.appendChild(table);
+                    
+                    // Clear container and add sunken panel
+                    const container = document.getElementById('intentions-container');
+                    container.innerHTML = '';
+                    container.appendChild(sunkenPanel);
+                    
+                } catch (error) {
+                    console.error('Error fetching intentions:', error);
+                    document.getElementById('intentions-container').innerHTML = 
+                        `<p>Error loading intentions: ${error.message}</p>`;
+                }
+            };
+            
+            // Fetch intentions when page loads
+            fetchIntentions();
+
+            // Add interactive table behavior
+            document.querySelectorAll('table.interactive').forEach(element => {
+                element.addEventListener('click', (event) => {
+                    const highlightedClass = 'highlighted';
+                    const isRow = element => element.tagName === 'TR' && element.parentElement.tagName === 'TBODY';
+                    const newlySelectedRow = event.composedPath().find(isRow);
+                    const previouslySelectedRow = Array.from(newlySelectedRow.parentElement.children).filter(isRow).find(element => element.classList.contains(highlightedClass));
+                    if(previouslySelectedRow){
+                        previouslySelectedRow.classList.toggle(highlightedClass);
+                    }
+
+                    if (newlySelectedRow) {
+                        newlySelectedRow.classList.toggle(highlightedClass);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
