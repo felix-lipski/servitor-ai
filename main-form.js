@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('manifestation-form');
     const submitButton = form.querySelector('button[type="submit"]');
+    const durationSelect = document.getElementById('duration');
+    const customDurationInput = document.getElementById('custom-duration');
 
     // Add cost display element before the submit button
     const costDisplay = document.createElement('div');
@@ -50,11 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
         wordCountDisplay.textContent = wordCount;
     }
 
+    // Handle custom duration visibility
+    durationSelect.addEventListener('change', () => {
+        if (durationSelect.value === 'custom') {
+            customDurationInput.classList.remove('hidden');
+        } else {
+            customDurationInput.classList.add('hidden');
+        }
+        updateCostDisplay();
+    });
+
+    // Update cost when custom duration changes
+    customDurationInput.addEventListener('input', updateCostDisplay);
+
     // Update cost display whenever duration or intensity changes
-    const durationSelect = document.getElementById('duration');
-    
     function updateCostDisplay() {
-        const duration = parseInt(durationSelect.value);
+        const duration = durationSelect.value === 'custom' 
+            ? parseInt(customDurationInput.value) || 0
+            : parseInt(durationSelect.value);
         const intensity = intensitySelect.value;
         const cost = calculatePrice(duration, intensity);
         
@@ -101,8 +116,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Get form values
         const statement = document.getElementById('intention').value;
-        const duration = document.getElementById('duration').value;
+        const duration = durationSelect.value === 'custom' 
+            ? customDurationInput.value 
+            : durationSelect.value;
         const intensity = document.getElementById('intensity').value;
+
+        // Validate custom duration
+        if (durationSelect.value === 'custom') {
+            const customDays = parseInt(customDurationInput.value);
+            if (isNaN(customDays) || customDays < 7 || customDays > 365) {
+                alert('Please enter a valid number of days between 7 and 365');
+                return;
+            }
+        }
 
         const originalButtonText = submitButton.textContent;
         

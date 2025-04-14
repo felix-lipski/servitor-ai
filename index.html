@@ -23,7 +23,7 @@
         <div class="nav-links">
             <a href="index.html">Manifest!</a>
             <a href="about.html">About</a>
-            <a href="faq.html">FAQ</a>
+            <!-- <a href="faq.html">FAQ</a> -->
             <!-- <a href="contact.html">Contact</a> -->
             <div class="divider"></div>
             <a href="auth.html" class="auth-link">Login/Register</a>
@@ -59,8 +59,11 @@
                         <option value="7">One Week</option>
                         <option value="14">Two Weeks</option>
                         <option value="30">One Month</option>
-                        <option value="90">Three Months</option>
+                        <!-- 93! :D get it?! -->
+                        <option value="93">Three Months</option>
+                        <option value="custom">Custom (days)</option>
                     </select>
+                    <input type="number" id="custom-duration" name="custom-duration" min="7" max="365" value="7" class="hidden" placeholder="Days">
                 </div>
 
                 <div class="form-group">
