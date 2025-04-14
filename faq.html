@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Servitor AI 🪷 - FAQ</title>
-    <link rel="icon" type="image/x-icon" href="icon.png" />
+    <link rel="icon" type="image/x-icon" href="images/monk.png" />
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -14,9 +14,6 @@
     </script>
   </head>
   <style>
-      main {
-        width: 50%;
-      }
     p {
       font-size: 0.9rem;
     }
@@ -44,7 +41,7 @@
         <a href="#" class="logout-link hidden">Logout</a>
       </div>
     </nav>
-    <main>
+    <main class="main-narrow">
       <section>
         <h2 class="box-title">Frequently Asked Questions</h2>
         <h3>Can I really use my name in the prompt? Is my data private?</h3>
@@ -84,61 +81,13 @@
       </section>
     </main>
     <footer>
-      <a href="https://neocities.org" id="neocities-link"
-        >built on neocities.org</a
-      >
-      <span>Servitor AI 2025</span>
+      <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
+      <a href="https://www.textstudio.com/">Logo by</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="tos.html">Terms of Service</a>
+      <span>ServitorAI 2025</span>
       <a href="https://felix.lipski.xyz">Felix Lipski</a>
     </footer>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const supabase = window.supabase.createClient(
-          window.SUPABASE_URL,
-          window.SUPABASE_ANON_KEY
-        );
-
-        // Check authentication status
-        const updateAuthUI = async () => {
-          const {
-            data: { session },
-          } = await supabase.auth.getSession();
-          const authLink = document.querySelector(".auth-link");
-          const intentionsLink = document.querySelector(".intentions-link");
-          const logoutLink = document.querySelector(".logout-link");
-
-          if (session) {
-            authLink.classList.add("hidden");
-            intentionsLink.classList.remove("hidden");
-            logoutLink.classList.remove("hidden");
-          } else {
-            authLink.classList.remove("hidden");
-            intentionsLink.classList.add("hidden");
-            logoutLink.classList.add("hidden");
-          }
-        };
-
-        // Initial check
-        updateAuthUI();
-
-        // Listen for auth state changes
-        supabase.auth.onAuthStateChange((event, session) => {
-          updateAuthUI();
-        });
-
-        // Logout functionality
-        document
-          .querySelector(".logout-link")
-          .addEventListener("click", async (e) => {
-            e.preventDefault();
-            try {
-              const { error } = await supabase.auth.signOut();
-              if (error) throw error;
-              window.location.href = "index.html";
-            } catch (error) {
-              alert(error.message);
-            }
-          });
-      });
-    </script>
+    <script src="auth.js"></script>
   </body>
 </html>

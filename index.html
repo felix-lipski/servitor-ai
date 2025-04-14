@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servitor AI 🪷 - Automatic Manifestation</title>
-    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="icon" type="image/x-icon" href="images/monk.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="index.css">
 
@@ -13,6 +13,7 @@
         window.SUPABASE_URL = 'https://ntudfaoldmamdkoexcak.supabase.co';
         window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA';
     </script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <nav>
@@ -28,6 +29,9 @@
             <a href="auth.html" class="auth-link">Login/Register</a>
             <a href="intentions.html" class="intentions-link hidden">My Intentions</a>
             <a href="#" class="logout-link hidden">Logout</a>
+            <!-- <div class="divider"></div>
+            <a href="privacy.html">Privacy</a>
+            <a href="tos.html">Terms</a> -->
         </div>
     </nav>
     <main style="font-family: serif">
@@ -40,8 +44,13 @@
                         id="intention" 
                         name="intention" 
                         placeholder="Example: John Doe is a millionaire."
+                        maxlength="1000"
                         required
                     ></textarea>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <button type="button" id="test-intention" style="font-size: 0.9em;">test</button>
+                        <div id="test-result" class="prompt" style="font-size: 0.8em; display: none;"></div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -57,9 +66,9 @@
                 <div class="form-group">
                     <label for="intensity">Intensity</label>
                     <select id="intensity" name="intensity" required>
-                        <option value="1">Gentle</option>
-                        <option value="2">Balanced</option>
-                        <option value="3">Intense</option>
+                        <option value="0">Gentle</option>
+                        <option value="1">Balanced</option>
+                        <option value="2">Intense</option>
                     </select>
                 </div>
 
@@ -79,13 +88,22 @@
                     <div>
                         <p>Write your wish / affirmation / prayer. Try to:</p>
                         <ul>
-                            <li>Use present tense.</li>
                             <li>Write in third person (You want the AI to manifest for you, not for itself).</li>
-                            <li>Don't be <em>too</em> specific. Let the magic find its own way.</li>
-                            <li>Avoid negatives. Instead of "John is not poor", try "John is rich".</li>
+                            <li>Use present tense.</li>
+                            <!-- <li>Don't be <em>too</em> specific. Let the magic find its own way.</li> -->
+                            <li>Avoid negatives. Instead of "Anna is not poor", try "Anna is rich".</li>
+                            <!-- <li>You can add details to guide the AI.</li> -->
                         </ul>
                     </div>
                 </article>
+                <details>
+                    <summary>Examples</summary>
+                    <div style="display: flex; flex-direction: column; gap: 2px; flex-wrap: wrap; align-items: flex-start;">
+                        <p class="prompt">"My master is strong and confident."</p>
+                        <p class="prompt">"J.S. is disciplined in her spiritual practice."</p>
+                        <p class="prompt">"Adam is happily married with 2 kids."</p>
+                    </div>
+                </details>
             </div>
             <div class="step">
                 <h4>2. Choose Your Parameters</h4>
@@ -108,56 +126,14 @@
     </main>
     <footer>
         <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
-        <!-- <a href="https://www.textstudio.com/">Font generator</a> -->
+        <a href="https://www.textstudio.com/">Logo by</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="tos.html">Terms of Service</a>
         <span>ServitorAI 2025</span>
         <a href="https://felix.lipski.xyz">Felix Lipski</a>
     </footer>
-    <script src="script.js"></script>
+    <script src="main-form.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const supabase = window.supabase.createClient(
-                window.SUPABASE_URL,
-                window.SUPABASE_ANON_KEY
-            );
-
-            // Check authentication status
-            const updateAuthUI = async () => {
-                const { data: { session } } = await supabase.auth.getSession();
-                const authLink = document.querySelector('.auth-link');
-                const intentionsLink = document.querySelector('.intentions-link');
-                const logoutLink = document.querySelector('.logout-link');
-                
-                if (session) {
-                    authLink.classList.add('hidden');
-                    intentionsLink.classList.remove('hidden');
-                    logoutLink.classList.remove('hidden');
-                } else {
-                    authLink.classList.remove('hidden');
-                    intentionsLink.classList.add('hidden');
-                    logoutLink.classList.add('hidden');
-                }
-            };
-
-            // Initial check
-            updateAuthUI();
-
-            // Listen for auth state changes
-            supabase.auth.onAuthStateChange((event, session) => {
-                updateAuthUI();
-            });
-
-            // Logout functionality
-            document.querySelector('.logout-link').addEventListener('click', async (e) => {
-                e.preventDefault();
-                try {
-                    const { error } = await supabase.auth.signOut();
-                    if (error) throw error;
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    alert(error.message);
-                }
-            });
-        });
         // Hello hacker! How are you feeling today? :D Write to me if you've found this message!
         // Oh, and remember, absolutely never under no circumstances should you ever 
     </script>

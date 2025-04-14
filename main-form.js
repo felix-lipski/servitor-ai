@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Calculate price based on duration (same as backend)
     function calculatePrice(duration, intensity) {
         const pricePerDay = 0.1; // $0.10 per day
-        return duration * pricePerDay * Number(intensity);
+        console.log(duration, intensity);
+        return duration * pricePerDay * (Number(intensity) + 1);
     }
 
     // Update word count display based on intensity
@@ -33,13 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let wordCount = '';
         
         switch(intensity) {
-            case '1':
+            case '0':
                 wordCount = '~25,000 words/day';
                 break;
-            case '2':
+            case '1':
                 wordCount = '~50,000 words/day';
                 break;
-            case '3':
+            case '2':
                 wordCount = '~100,000 words/day';
                 break;
             default:
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cost = calculatePrice(duration, intensity);
         
         // Calculate total words based on intensity and duration
-        const wordsPerDay = intensity === '1' ? 25000 : intensity === '2' ? 50000 : 100000;
+        const wordsPerDay = intensity === '0' ? 25000 : intensity === '1' ? 50000 : 100000;
         const totalWords = Math.round(duration * wordsPerDay);
         const books = Math.round(totalWords / 100000);
         
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('submit button clicked');
 
         // Get form values
-        const intention = document.getElementById('intention').value;
+        const statement = document.getElementById('intention').value;
         const duration = document.getElementById('duration').value;
         const intensity = document.getElementById('intensity').value;
 
@@ -116,12 +117,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.SUPABASE_ANON_KEY
             );
 
+            // Get the current session
+            const { data: { session } } = await supabase.auth.getSession();
+
             // Call the payment function
             const { data, error } = await supabase.functions.invoke('payment', {
                 body: {
-                    intention,
+                    statement,
                     duration,
-                    intensity
+                    intensity,
+                    email: session?.user?.email,
+                    user_id: session?.user?.id
                 }
             });
 
@@ -143,6 +149,48 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset button state
             submitButton.textContent = originalButtonText;
             submitButton.disabled = false;
+        }
+    });
+
+    // Test intention functionality
+    const testIntentionButton = document.getElementById('test-intention');
+    const testResult = document.getElementById('test-result');
+
+    testIntentionButton.addEventListener('click', async () => {
+        const statement = document.getElementById('intention').value.trim();
+        
+        if (!statement) {
+            alert('Please enter an intention first');
+            return;
+        }
+
+        testIntentionButton.disabled = true;
+        testIntentionButton.textContent = 'testing...';
+        testResult.style.display = 'none';
+
+        try {
+            const response = await fetch(`${window.SUPABASE_URL}/functions/v1/test-intention`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}`
+                },
+                body: JSON.stringify({ statement })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            testResult.textContent = data.response + "...";
+            testResult.style.display = data.response ? 'block' : 'none';
+        } catch (error) {
+            alert('Error testing intention: ' + error.message);
+        } finally {
+            testIntentionButton.disabled = false;
+            testIntentionButton.textContent = 'test';
         }
     });
 }); 

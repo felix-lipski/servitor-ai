@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servitor AI 🪷 - Payment Successful</title>
+    <link rel="icon" type="image/x-icon" href="images/monk.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.SUPABASE_URL = "https://ntudfaoldmamdkoexcak.supabase.co";
+        window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA";
+    </script>
+    <script src="auth.js"></script>
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const duration = urlParams.get('duration');
+        const intensity = urlParams.get('intensity');
+        const token = urlParams.get('token');
+        const statement = urlParams.get('statement');
+        // Map intensity values to labels
+        const intensityLabels = {
+            '0': 'Gentle',
+            '1': 'Balanced',
+            '2': 'Intense'
+        };
+
+        // Display parameters when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.querySelector('.success-message p');
+            if (duration && intensity) {
+                const intensityLabel = intensityLabels[intensity] || intensity;
+                successMessage.innerHTML += `<br><br>Duration: ${duration} days<br>Intensity: ${intensityLabel}<br><br>Intention: <span class="prompt">${statement}</span>`;
+            }
+
+            // Add message for anonymous purchases
+            if (token) {
+                const nextSteps = document.querySelector('.next-steps ul');
+                const tokenMessage = document.createElement('li');
+                tokenMessage.innerHTML = `
+                    <strong>Important:</strong> You purchased without signing up. 
+                    Save this token to retrieve your intention later: <code class="prompt">${token}</code>
+                `;
+                nextSteps.insertBefore(tokenMessage, nextSteps.firstChild);
+                
+                // Hide the intentions link item
+                document.getElementById('intentions-link-item').style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        p {
+            font-size: 0.9rem;
+            color: black;
+        }
+
+        h2 {
+            border-bottom: 1px dashed gray;
+        }
+
+        .success-message {
+            text-align: center;
+            /* margin: 2rem 0; */
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .next-steps {
+            margin-top: 2rem;
+        }
+
+        .next-steps ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .next-steps li {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="./images/logo5.png" alt="Servitor AI Logo" class="logo" height="80">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Manifest!</a>
+            <a href="about.html">About</a>
+            <a href="faq.html">FAQ</a>
+            <div class="divider"></div>
+            <a href="auth.html" class="auth-link">Login/Register</a>
+            <a href="intentions.html" class="intentions-link hidden">My Intentions</a>
+            <a href="#" class="logout-link hidden">Logout</a>
+        </div>
+    </nav>
+    <main class="main-narrow">
+        <section>
+            <div class="success-message">
+                <!-- <div class="success-icon">✨</div> -->
+                <img src="images/monk.png" alt="Servitor AI Logo">
+                <h2>Payment Successful!</h2>
+                <p>Thank you for your purchase. Your servitor has been created and is now working on your manifestation.</p>
+            </div>
+
+            <div class="next-steps">
+                <h3>What happens next?</h3>
+                <ul>
+                    <li>Your servitor has been created and is now processing your intention</li>
+                    <li id="intentions-link-item">You can view and manage your active servitors in the <a href="intentions.html">My Intentions</a> page</li>
+                    <li>Your servitor will continue working for the duration you selected</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="intentions.html" class="button">View My Intentions</a>
+                <a href="index.html" class="button">Create Another Servitor</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
+        <a href="https://www.textstudio.com/">Logo by</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="tos.html">Terms of Service</a>
+        <span>ServitorAI 2025</span>
+        <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+    <script src="auth.js"></script>
+</body>
+</html> 

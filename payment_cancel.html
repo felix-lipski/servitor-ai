@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servitor AI 🪷 - Payment Cancelled</title>
+    <link rel="icon" type="image/x-icon" href="images/monk.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.SUPABASE_URL = "https://ntudfaoldmamdkoexcak.supabase.co";
+        window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA";
+    </script>
+    <script src="auth.js"></script>
+    <style>
+        p {
+            font-size: 0.9rem;
+            color: black;
+        }
+
+        h2 {
+            border-bottom: 1px dashed gray;
+        }
+
+        .cancel-message {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .cancel-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="./images/logo5.png" alt="Servitor AI Logo" class="logo" height="80">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Manifest!</a>
+            <a href="about.html">About</a>
+            <a href="faq.html">FAQ</a>
+            <div class="divider"></div>
+            <a href="auth.html" class="auth-link">Login/Register</a>
+            <a href="intentions.html" class="intentions-link hidden">My Intentions</a>
+            <a href="#" class="logout-link hidden">Logout</a>
+        </div>
+    </nav>
+    <main class="main-narrow">
+        <section>
+            <div class="cancel-message">
+                <div class="cancel-icon">❌</div>
+                <h2>Payment Cancelled</h2>
+                <p>Your payment was cancelled. No charges have been made to your account.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>What happened?</h3>
+                <p>You cancelled the payment process before it was completed. This is completely fine - you can try again whenever you're ready.</p>
+                
+                <h3>Want to try again?</h3>
+                <p>If you'd like to create a servitor, you can return to the main page and start over.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="index.html" class="button">Return to Manifestation</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
+        <a href="https://www.textstudio.com/">Logo by</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="tos.html">Terms of Service</a>
+        <span>ServitorAI 2025</span>
+        <a href="https://felix.lipski.xyz">Felix Lipski</a>
+    </footer>
+    <script src="auth.js"></script>
+</body>
+</html> 

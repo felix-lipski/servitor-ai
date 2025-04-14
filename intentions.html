@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servitor AI 🪷 - My Intentions</title>
-    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="icon" type="image/x-icon" href="images/monk.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="intentions.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -16,11 +16,12 @@
         window.SUPABASE_URL = 'https://ntudfaoldmamdkoexcak.supabase.co';
         window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dWRmYW9sZG1hbWRrb2V4Y2FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjUwNTcsImV4cCI6MjA1ODUwMTA1N30.K5X3cVAUiASVyMI4_xmstMoMBbuLACApXa0-ibZm0PA';
     </script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <nav>
         <a href="index.html">
-            <img src="./images/logo4.png" alt="Servitor AI Logo" class="logo" height="80">
+            <img src="./images/logo5.png" alt="Servitor AI Logo" class="logo" height="80">
         </a>
         <div class="nav-links">
             <a href="index.html">Manifest!</a>
@@ -38,6 +39,7 @@
             <div id="intentions-container">
                 <p>Loading your intentions...</p>
             </div>
+
             <p>
                 <a href="index.html">+ Create a new intention</a>
             </p>
@@ -45,7 +47,10 @@
     </main>
     <footer>
         <a href="https://neocities.org" id="neocities-link">built on neocities.org</a>
-        <span>Servitor AI 2025</span>
+        <a href="https://www.textstudio.com/">Logo by</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="tos.html">Terms of Service</a>
+        <span>ServitorAI 2025</span>
         <a href="https://felix.lipski.xyz">Felix Lipski</a>
     </footer>
 
@@ -55,44 +60,6 @@
                 window.SUPABASE_URL,
                 window.SUPABASE_ANON_KEY
             );
-
-            // Check authentication status
-            const updateAuthUI = async () => {
-                const { data: { session } } = await supabase.auth.getSession();
-                const authLink = document.querySelector('.auth-link');
-                const intentionsLink = document.querySelector('.intentions-link');
-                const logoutLink = document.querySelector('.logout-link');
-                
-                if (session) {
-                    authLink.classList.add('hidden');
-                    intentionsLink.classList.remove('hidden');
-                    logoutLink.classList.remove('hidden');
-                } else {
-                    authLink.classList.remove('hidden');
-                    intentionsLink.classList.add('hidden');
-                    logoutLink.classList.add('hidden');
-                }
-            };
-
-            // Initial check
-            updateAuthUI();
-
-            // Listen for auth state changes
-            supabase.auth.onAuthStateChange((event, session) => {
-                updateAuthUI();
-            });
-
-            // Logout functionality
-            document.querySelector('.logout-link').addEventListener('click', async (e) => {
-                e.preventDefault();
-                try {
-                    const { error } = await supabase.auth.signOut();
-                    if (error) throw error;
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    alert(error.message);
-                }
-            });
 
             // Fetch and display intentions
             const fetchIntentions = async () => {
@@ -135,8 +102,8 @@
                         'Remaining days', 
                         'Status', 
                         'Created', 
-                        'Daily Words Processed',
-                        'Total Words Processed',
+                        'Symbols Generated Today',
+                        'Total Symbols Generated',
                         'Log Excerpt (last session)'
                     ];
                     
@@ -151,6 +118,14 @@
                     
                     // Create table body
                     const tbody = document.createElement('tbody');
+                    
+                    // Helper function to format numbers with k notation
+                    const formatNumber = (num) => {
+                        if (num >= 1000) {
+                            return (num / 1000).toFixed(1) + 'k';
+                        }
+                        return num.toFixed(1).toString();
+                    };
                     
                     data.forEach(intention => {
                         const row = document.createElement('tr');
@@ -173,9 +148,6 @@
                         
                         // Intensity
                         const intensityCell = document.createElement('td');
-                        // intensityCell.textContent = intention.intensity === 0 ? "gentle" : intention.intensity === 1 ? "balanced" : "intense";
-                        // intensityCell.style.fontWeight = "bold";
-                        // intensityCell.textContent = intensityCell.textContent.toUpperCase();
                         if (intention.intensity === 0) {
                             intensityCell.textContent = "GENTLE";
                             intensityCell.style.color = "#00c42a";
@@ -187,10 +159,12 @@
                             intensityCell.style.color = "#ff8800";
                         }
                         row.appendChild(intensityCell);
+                        const dailyQuota = 25000*Math.pow(2, intention.intensity);
+                        console.log(dailyQuota, intention.intensity);
                         
                         // Duration
                         const durationCell = document.createElement('td');
-                        durationCell.textContent = intention.remaining_days;
+                        durationCell.textContent = `${formatNumber(intention.remaining_total_quota/dailyQuota)} days`;
                         row.appendChild(durationCell);
                         
                         // Status
@@ -205,14 +179,13 @@
                         row.appendChild(createdAtCell);
                         
                         // Daily Words Processed
-                        const dailyQuota = 25000*Math.pow(2, intention.intensity);
                         const dailyWordsCell = document.createElement('td');
-                        dailyWordsCell.textContent = `${ dailyQuota - intention.remaining_daily_quota || 0}/${dailyQuota || 0}`;
+                        dailyWordsCell.textContent = `${formatNumber(dailyQuota - intention.remaining_daily_quota || 0)}/${formatNumber(dailyQuota || 0)}`;
                         row.appendChild(dailyWordsCell);
                         
                         // Total Words Processed
                         const totalWordsCell = document.createElement('td');
-                        totalWordsCell.textContent = `${intention.total_words_processed || 0}/${intention.total_quota || 0}`;
+                        totalWordsCell.textContent = `${formatNumber((intention.total_quota - intention.remaining_total_quota) || 0)}/${formatNumber(intention.total_quota || 0)}`;
                         row.appendChild(totalWordsCell);
                         
                         // Log Excerpt
