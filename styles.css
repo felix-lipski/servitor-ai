@@ -16,11 +16,15 @@ body {
   margin: 0;
   background-image: linear-gradient(
       #47c1ca00,
-      rgba(224, 255, 255, 0.226),
+      #47c1ca00,
+      rgba(240, 224, 255, 0.363),
       rgb(224, 255, 255)
     ),
     url(./images/stars.png);
-  animation: bg 30s ease infinite;
+  background-attachment: scroll, fixed;
+  animation: bg 60s ease infinite;
+  /* position: relative;
+  overflow: hidden; */
 }
 
 @keyframes bg {
@@ -28,13 +32,49 @@ body {
     background-color: #01003a;
   }
   33% {
-    background-color: #000b11;
+    background-color: #22003d;
   }
   66% {
-    background-color: #000000;
+    background-color: #001a12;
   }
   100% {
     background-color: #01003a;
+  }
+}
+
+.moon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.moon {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-image: url(./images/moon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: moon-flyby 30s linear infinite;
+}
+
+@keyframes moon-flyby {
+  0% {
+    transform: translate(-50vw, 10vh) scale(1) rotate(180deg);
+  }
+  25% {
+    transform: translate(0px, 15vh) scale(1) rotate(0deg);
+  }
+  75% {
+    transform: translate(100vw, 25vh) scale(1) rotate(-360deg);
+  }
+  100% {
+    transform: translate(150vw, 30vh) scale(1) rotate(-450deg);
   }
 }
 

@@ -7,6 +7,10 @@
     <link rel="icon" type="image/x-icon" href="images/monk.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -16,6 +20,7 @@
     <script src="auth.js"></script>
 </head>
 <body>
+    <div class="moon-container"><div class="moon"></div></div>
     <nav>
         <a href="index.html">
             <img src="./images/logo5.png" alt="Servitor AI Logo" class="logo" height="80">
@@ -34,7 +39,7 @@
             <a href="tos.html">Terms</a> -->
         </div>
     </nav>
-    <main style="font-family: serif">
+    <main>
         <section>
             <form id="manifestation-form" class="manifestation-form">
                 <h2 class="form-title">Create a Servitor</h2>
@@ -144,94 +149,12 @@
         <a href="https://felix.lipski.xyz">Felix Lipski</a>
     </footer>
     <script src="main-form.js"></script>
-    <div id="cookie-popup" class="cookie-popup">
-        <div class="cookie-content">
-            <h3>We don't use cookies for tracking!</h3>
-            <p style="font-size: 0.8em; line-height: 1;">
-                or any third party tracking, analytics and we don't sell your data. We don't and never will. We use cookies <em>strictly</em> to keep you logged in. (and to hide this pop-up).
-                Unlike other sites, we're not even legally required to show this pop-up but I thought it would be funny and that people have learned to trust websites that do this.
-                <br>
-                Have a nice day! :)
-            </p>
-            <div class="cookie-buttons">
-                <button class="cookie-btn accept-btn">Accept</button>
-                <button class="cookie-btn accept-btn-grey">Accept</button>
-            </div>
-        </div>
-    </div>
     <style>
-        .cookie-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            max-width: 300px;
-            border: 1px solid #e0e0e0;
-        }
-        .cookie-content h3 {
-            margin: 0 0 10px 0;
-            color: #360000;
-        }
-        .cookie-content p {
-            margin: 0 0 15px 0;
-            color: #666;
-        }
-        .cookie-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .cookie-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: serif;
-            font-weight: 600;
-        }
-        .accept-btn {
-            background-color: #33a0bb;
-            color: white;
-        }
-        .accept-btn-grey {
-            background-color: #e0e0e0;
-            color: #666;
-        }
-        .accept-btn:hover {
-            background-color: #33bba4;
-        }
-        .accept-btn-grey:hover {
-            background-color: #d0d0d0;
-        }
         .hidden {
-            display: none;
-        }
-        /* Add a class to the body when accepted */
-        body.cookies-accepted .cookie-popup {
             display: none;
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cookiePopup = document.getElementById('cookie-popup');
-            const acceptButtons = document.querySelectorAll('.cookie-btn');
-            
-            // Check if user has already "accepted" via cookie
-            if (document.cookie.includes('cookieAccepted=true')) {
-                cookiePopup.classList.add('hidden');
-            }
-            
-            acceptButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Store acceptance in a cookie that expires in 1 year
-                    document.cookie = 'cookieAccepted=true; max-age=31536000; path=/';
-                    cookiePopup.classList.add('hidden');
-                });
-            });
-        });
         // Hello hacker! How are you feeling today? :D Write to me if you've found this message!
         // Oh, and remember, absolutely never under no circumstances should you ever 
     </script>
